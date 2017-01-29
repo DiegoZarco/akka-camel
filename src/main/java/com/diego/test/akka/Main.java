@@ -5,12 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.diego.test.akka.camel.FileCamelConsumer;
+import com.diego.test.akka.camel.FileLogicActor;
 import com.diego.test.akka.camel.RabbitMQCamelConsumer;
+import com.diego.test.akka.camel.routes.FileAkkaCamelRoute;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.camel.Camel;
+import akka.camel.CamelExtension;
 
 @SuppressWarnings("rawtypes")
 public class Main {
@@ -30,10 +35,13 @@ public class Main {
 
 	public void boot() {
 		ActorSystem system = ActorSystem.create();
+		Camel camel = CamelExtension.get(system);
 		try {
 			Config config = ConfigFactory.defaultApplication();
 			List<String> camelEndpoints = config.getStringList("endpoints");
 			startCamelEndpoints(camelEndpoints, system);
+			ActorRef fileLogicActor = system.actorOf(Props.create(FileLogicActor.class));
+			camel.context().addRoutes(new FileAkkaCamelRoute(fileLogicActor));
 		} catch (Exception e) {
 			System.out.println("FALTAL ERROR --> " + e);
 			system.terminate();

@@ -1,6 +1,10 @@
-package com.diego.test.camel;
+package com.diego.test.akka;
 
 import org.apache.camel.main.Main;
+
+import com.diego.test.camel.FileRoute;
+import com.diego.test.camel.LogicRoute;
+import com.diego.test.camel.RabbitMQRoute;
 
 public class MainCamel {
 	
