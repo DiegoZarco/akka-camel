@@ -1,5 +1,5 @@
 # akka-camel
-A proof of concept to see the integration between akka and camel with rabbitmq 
+A proof of concept to see the integration between akka and camel with rabbitmq and file component
 
 We see different approachs to consume events from RabbitMQ.
 
